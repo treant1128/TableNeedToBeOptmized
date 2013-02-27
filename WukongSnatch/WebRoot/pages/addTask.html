@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>唔箜后台</title>
+<script src="../js/jquery.js"></script>
+
+<style type="text/css">
+.mytb{margin-top: 3px;z-index: 10000;}
+/* 列表table */
+table.listTable{width:100%;border:1px solid black;margin-top: 5px;border-top-width: 0px; }
+table.listTable td{ padding:5px 10px 0 15px; text-align:left; border-top:1px solid black; background:#FFFFFF;border-left-width: 0px;border-right-width: 0px;}
+
+</style>
+<script type="text/javascript">
+			$(document).ready(function(){
+				window.onmessage = function(event) {
+    				console.log(event.data);
+    				var message=event.data;
+    				var title=$("#sendTitle");
+    				var url=$("#sendOUrl");
+    					title.val(message.title);
+    					url.val(message.url);
+				};
+			});
+</script>
+</head>
+
+<body>
+	<form id="smsTaskForm" name="smsTaskForm" action="http://112.122.11.9/ahlt/smsManage/saveSmsTask.do" method="post">
+		
+				
+		<span id="infols"></span>
+		<table width="100%" class="infoForm">
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdL">选择文件：</td>
+				<td class="tdR">
+					<select name="filePath" id="filePath" class="input_text_2">
+						<option></option>
+					    
+							<option value="20120727">20120727</option>
+						
+							<option value="ftp_ahlt">ftp_ahlt</option>
+						
+							<option value="huodong">huodong</option>
+						
+							<option value="January-2G">January-2G</option>
+						
+							<option value="January-3G">January-3G</option>
+						
+							<option value="liuliangpaiming">liuliangpaiming</option>
+						
+							<option value="October">October</option>
+						
+							<option value="sep">sep</option>
+						
+							<option value="sinablog">sinablog</option>
+						
+							<option value="Staff">Staff</option>
+						
+							<option value="test">test</option>
+						
+							<option value="testTask">testTask</option>
+						
+							<option value="VIP">VIP</option>
+						
+							<option value="Wo-Store">Wo-Store</option>
+						
+							<option value="xinrw">xinrw</option>
+						
+							<option value="xiyou">xiyou</option>
+						
+							<option value="yingxiaoduanxin">yingxiaoduanxin</option>
+						         
+					</select> 
+					<span style="margin-left:3px;color:#FF7F00;">(选择文件夹)</span>
+					<div id="numDiv"></div>
+					<div id="numFileTip" style="width:250px;"></div>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdL">去重任务：</td>
+				<td class="tdR">
+					 <input type="text" class="input_text_2" name="btDate" id="btDate" value='2013-02-21' onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly"/>&nbsp;&nbsp;
+					 <input type="button" value="查询任务" id="taskBtn"/><a href="#" id="bnShouqi" onclick="shouqi()">收起</a>&nbsp;&nbsp;&nbsp;<a href="#" id="bnShouqi" onclick="zhankai()">展开</a><font color="red">（*注：不点查询任务不与其他任务去重）</font>
+					 <span style="margin-left:3px;color:#FF7F00;">(选择日期查询任务)</span>
+					 <div id="taskDiv"></div>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdL">下发时间：</td>
+				<td class="tdR">
+					<input type="radio" name="smsTask.sendTimeType" id="send_status0" value="0" onclick="javascript:checkSetTime('timediv',0);" checked="checked"/>立即下发&nbsp;&nbsp;
+					<input type="radio" name="smsTask.sendTimeType" id="send_status1" value="1" onclick="javascript:checkSetTime('timediv',1);"/>定时下发&nbsp;&nbsp;
+					<input type="radio" name="smsTask.sendTimeType" id="send_status2" value="2" onclick="javascript:checkSetTime('timediv',0);"/>稍后指定&nbsp;&nbsp;
+						        <div style="display:none;padding:6px 0 2px 20px;" id="timediv">
+								        开始时间：<input type="text" name="smsTask.sendTime" id="sendTime" value="2013-02-21 11:41:00" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:00',minDate:'2013-02-21 11:41:00',isShowClear:false,readOnly:true})"/> 
+					        	</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM"></td>
+			</tr>
+			<tr>
+				<td class="tdL">下发语：</td>
+				<td class="tdR">
+					<!-- <input class="input_text_1" name="smsTask.sendTitle" id="sendTitle1" maxlength="100" type="text"/> -->
+					<textarea name="smsTask.sendTitle" id="sendTitle" cols='78' rows='3' onkeyup="value=value.replace(/[\r\n]/g,'')"></textarea> <span style="margin-left:3px;color:#FF7F00;">请不要输入回车！</span>
+					        	<div id="sendTitleTip"></div>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM">&nbsp;</td>
+			</tr>
+			<tr id="purl">
+				<td class="tdL">下发URL：</td>
+				<td class="tdR">
+ 					<input class="input_text_1" name="smsTask.sendOUrl" id="sendOUrl" value="" type="text"/>
+					<div id="sendOUrlTip"></div>
+				</td>
+			</tr>
+			<tr id="purl_bt">
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM"></td>
+			</tr>
+			
+			<tr>
+				<td class="tdL">描述：</td>
+				<td class="tdR">
+					<input class="input_text_1" name="smsTask.content" value="" type="text"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM"></td>
+			</tr>
+			<tr>
+				<td class="tdL">优先级：</td>
+				<td class="tdR">
+					<select name="smsTask.priority">
+					                <option value="0">0</option>
+					                <option value="1">1</option>
+					                <option value="2">2</option>
+					                <option value="3">3</option>
+					                <option value="4">4</option>
+					                <option value="5">5</option>
+					                <option value="6">6</option>
+					                <option value="7">7</option>
+					                <option value="8">8</option>
+					                <option value="9">9</option>
+					            </select>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM">&nbsp;</td>
+			</tr>
+			
+			<tr>
+				<td class="tdL">方式：</td>
+				<td class="tdR">	
+					<label style="width:100px;display:inline-block;"><input type="radio" name="smsTask.method" id="method0" value="0"/>短信</label>
+					            <input type="radio" name="smsTask.method" id="method1" value="1" checked="checked" />push
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdM">&nbsp;</td>
+			</tr>
+			
+					
+			
+			<tr>
+				<td class="tdL">是否保留长标题：</td>
+				<td class="tdR">
+				<input type="radio" name="smsTask.longTitle" id="longTitle" value="0" checked="checked"/>否&nbsp;&nbsp;
+				<input type="radio" name="smsTask.longTitle" id="longTitle" value="1"/>是
+					 <span style="margin-left:6px;color:#FF7F00;">保留长标题将不对标题截断，否则下发标题会根据一条短信的长度适合截断!</span>
+				</td>
+			</tr>			
+			<tr>
+				<td class="tdL"></td>
+				<td class="tdR">
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">跳出31597：</td>
+				<td class="tdR">
+					 <input type="radio" name="smsTask.jump" id="jump" value="0" checked="checked"/>否&nbsp;&nbsp;
+					 <input type="radio" name="smsTask.jump" id="jump1" value="1" />是&nbsp;&nbsp;
+					<input type="radio" name="smsTask.jump" id="jump2" value="2" />myappgo&nbsp;&nbsp;
+				</td>
+			</tr>			
+			<tr>
+				<td class="tdL"></td>
+				<td class="tdR">
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">去重规则：</td>
+				<td class="tdR">
+					<input type="radio" name="smsTask.qcType" id="qcType7" value="7" checked="checked"/>完全去重&nbsp;&nbsp;
+					<input type="radio" name="smsTask.qcType" id="qcType6" value="6" />仅和预置列表去重&nbsp;&nbsp;
+					<input type="radio" name="smsTask.qcType" id="qcType5" value="5" />仅和已发去重&nbsp;&nbsp;
+					<input type="radio" name="smsTask.qcType" id="qcType0" value="0" />不去重&nbsp;&nbsp;
+				</td>
+			</tr>			
+			<tr>
+				<td class="tdL"></td>
+				<td class="tdR">
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">下发时间段：</td>
+				<td class="tdR">
+				 <input type="checkbox" name="itType" id="itType" value="1"/>
+				 <span style="margin-left:6px;color:#FF7F00;">勾选自定义下发时间段，否则采用默认时间段!</span>
+				<div id="itDiv" style="display:none; ">
+					<ul id="demo2"></ul>
+					<a href="#">+ 添加</a>
+				</div>
+				</td>
+			</tr>			
+			<tr>
+				<td class="tdL"></td>
+				<td class="tdR">
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL"></td>
+				<td class="tdR">
+					<input type="hidden" value="0" name="isVip"/>
+					<input type="button" name="button_submit" id="button_submit" value="提交"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdL">&nbsp;</td>
+				<td class="tdR">&nbsp;</td>
+			</tr>
+		</table>
+	</form>
+
+
+
+
+	</body>
+	<script type="text/javascript">
+	
+	
+	</script>
+</html>

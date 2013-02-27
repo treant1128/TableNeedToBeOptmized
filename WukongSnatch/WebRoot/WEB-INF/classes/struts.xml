@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="GBK"></constant>
+	<package name="default" namespace="/" extends="struts-default">
+	
+		<action name="loginAction" class="com.wukong.t4.admin.action.LoginAction">
+			<result name="LoginSuccess">/index.jsp</result>
+			<result name="loginerror">/signin.html</result>
+		</action>
+		
+		<action name="snatchOPML" class="com.wukong.snatch.action.OPMLAction">
+			<result name="success">/outcome.jsp</result>
+		</action>
+		
+		<action name="snatchEntry" class="com.wukong.snatch.action.EntryAction">
+			<result name="NoKeywords">/index.jsp</result>
+			<result name="success">/outcome.jsp</result>
+			<result name="toTargetEntries">/pages/entryCategory.jsp</result>
+		</action>
+		
+		<action name="bootStrapAction" class="com.wukong.snatch.action.BootStrapAction">
+			
+			<result name="success" >/index.jsp</result>
+			<result name="toAllOpmls">/pages/allOpmls.jsp</result>
+			<result name="toList" type="redirectAction">BootStrap!toAll.action</result>
+			<result name="detail">/pages/detail.jsp</result>
+			<result name="update">/pages/newSmsTask.jsp</result>
+			<result name="error" >/error.jsp</result>
+		</action>
+	</package>
+</struts>    
